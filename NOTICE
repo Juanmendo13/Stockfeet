@@ -1,0 +1,48 @@
+Stockfeet — third-party notices
+================================
+
+Stockfeet is an original application. Chess playing strength is provided by
+third-party open-source components, not claimed as original Stockfeet engines.
+
+-------------------------------------------------------------------------------
+Leela Chess Zero (lc0)
+-------------------------------------------------------------------------------
+Project: https://lczero.org/
+Source:  https://github.com/LeelaChessZero/lc0
+License: GNU General Public License v3.0 or later (GPL-3.0-or-later)
+
+Copyright (C) The LCZero Authors
+
+Lc0 is free software: you can redistribute it and/or modify it under the terms
+of the GNU General Public License as published by the Free Software Foundation,
+either version 3 of the License, or (at your option) any later version.
+
+When Stockfeet redistributes the lc0 binary (unmodified or modified), Stockfeet
+must also provide:
+  - a copy of the GPL-3.0 license text, and
+  - corresponding source code for that lc0 build (or a written offer valid
+    under GPL-3.0), including any Stockfeet modifications to lc0.
+
+Stockfeet communicates with lc0 as a separate UCI process. Stockfeet application
+code is not a derivative of lc0 solely by speaking UCI to an external binary.
+
+Neural network weight files used with lc0 are separate data artifacts. Stockfeet
+will only ship or download networks whose redistribution terms are clear and
+compatible with this product (prefer official LCZero networks, with attribution).
+Do not treat official LCZero networks as proprietary Stockfeet IP.
+
+-------------------------------------------------------------------------------
+Lichess puzzles
+-------------------------------------------------------------------------------
+Puzzle positions and ratings in stockfeet/data/puzzles.json are derived from the
+Lichess open puzzle database / community puzzles (https://lichess.org/,
+https://database.lichess.org/#puzzles).
+
+Lichess puzzle data is free to reuse. Stockfeet converts each puzzle so the FEN
+is the player-to-move position (after the opponent's setup move) and keeps the
+official Lichess rating and themes.
+
+Stockfeet is not affiliated with Lichess.
+"Leela Chess Zero", "LCZero", and "lc0" are names of the upstream project.
+"Stockfish" is unrelated; Stockfeet does not ship or claim Stockfish.
+Stockfeet is an independent product name and is not affiliated with those projects.

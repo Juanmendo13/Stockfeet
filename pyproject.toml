@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stockfeet"
+version = "0.1.0"
+description = "Chess coach and opponent powered by Leela Chess Zero (lc0)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Stockfeet" }]
+dependencies = [
+  "chess>=1.11",
+  "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+coach-llm = ["openai>=1.40"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+stockfeet = "stockfeet.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["stockfeet*"]
+
+[tool.setuptools.package-data]
+stockfeet = ["data/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

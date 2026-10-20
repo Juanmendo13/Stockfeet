@@ -1,0 +1,31 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+.venv/
+venv/
+.env
+
+# Lc0 binaries & nets (download separately; do not commit GPL binaries without source offer)
+engines/
+*.pb
+*.pb.gz
+*.onnx
+lc0.exe
+lc0
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Large local puzzle databases (do not commit)
+data/*.zst
+data/*.csv
+stockfeet/data/puzzles.sqlite
+stockfeet/data/human_book.sqlite
