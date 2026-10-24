@@ -70,6 +70,8 @@ def test_about_mentions_gpl_and_lc0():
     text = about(version="0.1.0")
     assert "GPL" in text
     assert "lczero.org" in text
+    assert "Powered by" in text or "POWERED BY" in text
+    assert "Stockfish" in text  # disclaimer: not Stockfish
 
 
 def test_puzzles_load_and_pick():

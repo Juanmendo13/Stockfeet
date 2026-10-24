@@ -12,6 +12,7 @@ venv/
 
 # Lc0 binaries & nets (download separately; do not commit GPL binaries without source offer)
 engines/
+vendor/
 *.pb
 *.pb.gz
 *.onnx

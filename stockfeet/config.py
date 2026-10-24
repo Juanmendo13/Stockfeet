@@ -51,6 +51,13 @@ class Settings:
         _load_env()
         raw_path = os.getenv("STOCKFEET_LC0_PATH", "").strip()
         path = Path(raw_path).expanduser() if raw_path else Path("")
+        if not path.exists():
+            # Prefer vendor copy from `stockfeet setup-lc0` / Setup Stockfeet.bat
+            from stockfeet.setup_lc0 import find_lc0_exe
+
+            vendor = find_lc0_exe()
+            if vendor is not None:
+                path = vendor
 
         weights_raw = os.getenv("STOCKFEET_LC0_WEIGHTS", "").strip()
         weights = Path(weights_raw).expanduser() if weights_raw else None

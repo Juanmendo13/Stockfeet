@@ -82,7 +82,14 @@ class Hub(tk.Tk):
         )
         tk.Label(
             brand,
-            text="lc0 coach · puzzles · skins",
+            text="Powered by Leela Chess Zero (lc0)  ·  not Stockfish",
+            font=("Segoe UI", 10, "bold"),
+            fg=OK,
+            bg=HEADER_BG,
+        ).pack(anchor="w")
+        tk.Label(
+            brand,
+            text="coach · puzzles · skins  ·  https://lczero.org/",
             font=("Segoe UI", 9),
             fg=MUTED,
             bg=HEADER_BG,
@@ -137,14 +144,14 @@ class Hub(tk.Tk):
         hero.pack(fill=tk.X, padx=12, pady=12)
         tk.Label(
             hero,
-            text="Play vs Leela",
+            text="Play vs Leela Chess Zero",
             font=("Segoe UI", 18, "bold"),
             fg=ACCENT,
             bg=PANEL,
         ).pack(anchor="w")
         tk.Label(
             hero,
-            text="Pick a strength card — lc0 is limited to match that Elo (not full engine play).",
+            text="Opponent = official lc0 (GPL), Elo-limited. Stockfeet is the coach UI — not a proprietary engine.",
             fg=MUTED,
             bg=PANEL,
         ).pack(anchor="w", pady=(4, 0))
@@ -154,15 +161,25 @@ class Hub(tk.Tk):
             tk.Label(
                 warn,
                 text=(
-                    "lc0 not found — Play/Demo need the engine.\n"
-                    f"Expected: {self.settings.lc0_path}\n"
-                    "Download from https://lczero.org/play/download/ and set STOCKFEET_LC0_PATH in .env.\n"
-                    "Puzzles, path, shop and profile still work."
+                    "Play needs Leela Chess Zero (lc0) — Stockfeet is powered by lc0, not Stockfish.\n"
+                    f"Expected: {self.settings.lc0_path or '(not set)'}\n"
+                    "Click below to download the official Windows CPU try build (~23 MB), "
+                    "or get GPU builds at https://lczero.org/play/download/"
                 ),
                 fg="#ffb4b4",
                 bg="#3b1d1d",
                 justify="left",
             ).pack(anchor="w")
+            tk.Button(
+                warn,
+                text="Download official lc0 (CPU try)",
+                command=self._download_lc0,
+                bg=OK,
+                fg="#0d1f0d",
+                relief=tk.FLAT,
+                padx=12,
+                pady=6,
+            ).pack(anchor="w", pady=(8, 0))
 
         self.play_color = tk.StringVar(value="white")
         self.play_elo = tk.IntVar(value=self.profile.puzzle_rating)
@@ -249,6 +266,42 @@ class Hub(tk.Tk):
             justify="left",
         ).pack(anchor="w", padx=12, pady=(0, 10))
         self._refresh_opp_desc()
+
+    def _download_lc0(self) -> None:
+        import threading
+        from stockfeet.config import Settings
+        from stockfeet.setup_lc0 import ensure_lc0
+
+        win = tk.Toplevel(self)
+        win.title("Download lc0")
+        win.configure(background=PANEL)
+        win.geometry("520x220")
+        log = tk.Text(win, height=8, bg=CARD, fg=FG, font=("Consolas", 9), wrap=tk.WORD)
+        log.pack(fill=tk.BOTH, expand=True, padx=12, pady=12)
+        log.insert(tk.END, "Powered by Leela Chess Zero (official build)…\n")
+
+        def say(msg: str) -> None:
+            def _() -> None:
+                log.insert(tk.END, msg + "\n")
+                log.see(tk.END)
+
+            self.after(0, _)
+
+        def work() -> None:
+            try:
+                exe = ensure_lc0(progress=say)
+                self.settings = Settings.from_env(require_engine=False)
+                self.after(
+                    0,
+                    lambda: messagebox.showinfo(
+                        "lc0 ready",
+                        f"Installed official lc0:\n{exe}\n\nRestart Play / Start game to use it.",
+                    ),
+                )
+            except Exception as exc:  # noqa: BLE001
+                self.after(0, lambda: messagebox.showerror("Download failed", str(exc)))
+
+        threading.Thread(target=work, daemon=True).start()
 
     def _select_opponent(self, elo: int) -> None:
         self.opponent_elo.set(elo)

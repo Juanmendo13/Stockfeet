@@ -26,6 +26,11 @@ def build_parser() -> argparse.ArgumentParser:
 
     sub.add_parser("about", help="Show legal credits (lc0 GPL + Stockfeet MIT)")
 
+    sub.add_parser(
+        "setup-lc0",
+        help="Download official Windows CPU lc0 into vendor/lc0 and write .env",
+    )
+
     play = sub.add_parser("play", help="Play a game against lc0 (GUI window by default)")
     play.add_argument("--color", choices=("white", "black", "random"), default="white")
     play.add_argument("--elo", type=int, default=1200, help="Your approximate Elo (coaching tone)")
@@ -62,6 +67,19 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "about":
         print(about(version=__version__))
+        return 0
+
+    if args.command == "setup-lc0":
+        from stockfeet.setup_lc0 import ensure_lc0
+
+        try:
+            exe = ensure_lc0(progress=print)
+        except Exception as exc:  # noqa: BLE001
+            print(f"setup-lc0 failed: {exc}", file=sys.stderr)
+            print("Manual download: https://lczero.org/play/download/", file=sys.stderr)
+            return 1
+        print(f"\nPowered by Leela Chess Zero — using {exe}")
+        print("Run: stockfeet play")
         return 0
 
     if args.command == "lesson":
